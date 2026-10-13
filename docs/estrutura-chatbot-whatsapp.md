@@ -112,18 +112,22 @@ chatbot-whatsapp/
 
 ### Configurar o webhook da Meta
 
-Defina as variáveis de ambiente `WHATSAPP_VERIFY_TOKEN` e `META_APP_SECRET`
-no ambiente em que o servidor será executado. O token de verificação é uma
-senha escolhida por você e deve ser igual à informada no painel da Meta; o
-segredo do app é obtido nas configurações do app Meta e nunca deve ser
-publicado no repositório.
+Defina as variáveis de ambiente `WHATSAPP_VERIFY_TOKEN`, `META_APP_SECRET`,
+`WHATSAPP_TOKEN` e `WHATSAPP_PHONE_NUMBER_ID` no ambiente em que o servidor
+será executado. O token de verificação é uma senha escolhida por você e deve
+ser igual à informada no painel da Meta. O segredo do app é obtido nas
+configurações do app Meta; o token de acesso e o ID do número são obtidos na
+configuração da API do WhatsApp. Esses valores são credenciais e nunca devem
+ser publicados no repositório. `WHATSAPP_API_VERSION` é opcional e, quando
+omitida, usa `v26.0`.
 
 O servidor expõe o webhook em `/api/webhook`:
 
 - `GET /api/webhook` valida o token e devolve `hub.challenge`, usado pela Meta
   para verificar o endereço.
 - `POST /api/webhook` confere `X-Hub-Signature-256` com o segredo do app e
-  valida a estrutura do evento antes de encaminhá-lo ao controlador.
+  valida a estrutura do evento antes de confirmar seu recebimento e enviar
+  uma saudação às mensagens recebidas.
 - `GET /api/status` informa se a API está ativa.
 
 No painel do app Meta, informe a URL pública HTTPS do servidor seguida de
