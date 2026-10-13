@@ -13,6 +13,7 @@ module.exports = (req, res, next) => {
     typeof assinatura === 'string' && /^sha256=[a-f0-9]{64}$/i.test(assinatura);
 
   if (!assinaturaValida || !Buffer.isBuffer(req.rawBody)) {
+    console.warn('POST do webhook recusado: assinatura ausente ou inválida.');
     return res.status(401).send({ erro: 'Assinatura do webhook inválida' });
   }
 
@@ -23,6 +24,7 @@ module.exports = (req, res, next) => {
   const assinaturaRecebida = Buffer.from(assinatura.slice('sha256='.length), 'hex');
 
   if (!crypto.timingSafeEqual(assinaturaEsperada, assinaturaRecebida)) {
+    console.warn('POST do webhook recusado: assinatura não corresponde ao app.');
     return res.status(401).send({ erro: 'Assinatura do webhook inválida' });
   }
 

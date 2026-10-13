@@ -58,6 +58,7 @@ exports.verificarWebhook = (req, res) => {
 };
 
 exports.receberMensagem = (req, res) => {
+  console.log('Evento válido recebido do WhatsApp.');
   res.status(200).send({ sucesso: true });
 
   setImmediate(() => {
