@@ -2,9 +2,7 @@
 
 const crypto = require('crypto');
 const enviarMensagemTexto = require('../../whatsapp/enviarMensagemTexto');
-
-const mensagemInicial =
-  'Olá! Sou o assistente virtual da Bot5Whats. Como posso ajudar você hoje?';
+const gerarResposta = require('../../ia/gerarResposta');
 
 const responderMensagensRecebidas = async (evento) => {
   for (const entrada of evento.entry) {
@@ -19,7 +17,12 @@ const responderMensagensRecebidas = async (evento) => {
           continue;
         }
 
-        await enviarMensagemTexto(mensagem.from, mensagemInicial);
+        const textoRecebido = mensagem.text?.body;
+        const resposta = typeof textoRecebido === 'string'
+          ? await gerarResposta(textoRecebido)
+          : 'No momento consigo responder mensagens de texto. Envie sua dúvida por escrito, por favor.';
+
+        await enviarMensagemTexto(mensagem.from, resposta);
       }
     }
   }

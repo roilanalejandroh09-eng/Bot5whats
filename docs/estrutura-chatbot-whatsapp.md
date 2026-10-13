@@ -121,13 +121,20 @@ configuração da API do WhatsApp. Esses valores são credenciais e nunca devem
 ser publicados no repositório. `WHATSAPP_API_VERSION` é opcional e, quando
 omitida, usa `v26.0`.
 
+Para gerar respostas relacionadas ao texto recebido, configure também
+`OPENAI_API_KEY` com uma chave da API da OpenAI. `OPENAI_MODEL` é opcional e
+usa `gpt-4o-mini` por padrão. A chave deve ser mantida como variável de ambiente
+no Render, nunca no código ou no repositório.
+
 O servidor expõe o webhook em `/api/webhook`:
 
 - `GET /api/webhook` valida o token e devolve `hub.challenge`, usado pela Meta
   para verificar o endereço.
 - `POST /api/webhook` confere `X-Hub-Signature-256` com o segredo do app e
-  valida a estrutura do evento antes de confirmar seu recebimento e enviar
-  uma saudação às mensagens recebidas.
+  valida a estrutura do evento antes de confirmar seu recebimento. Mensagens
+  de texto recebem uma resposta gerada pela OpenAI, enviada ao número que
+  iniciou a conversa pelo WhatsApp; outros tipos de mensagem recebem um aviso
+  de que o bot aceita texto.
 - `GET /api/status` informa se a API está ativa.
 
 No painel do app Meta, informe a URL pública HTTPS do servidor seguida de
