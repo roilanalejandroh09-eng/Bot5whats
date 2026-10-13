@@ -1,11 +1,535 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="A Bot5Whats desenvolve soluções de automação para conversas e atendimento pelo WhatsApp."
+    >
+    <meta name="theme-color" content="#f5f7f4">
+    <title>Bot5Whats | Automação de conversas no WhatsApp</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #18352d;
+        --muted: #5e7068;
+        --green: #176b4b;
+        --green-dark: #104c37;
+        --lime: #c9ef8a;
+        --paper: #f5f7f4;
+        --line: #dce5dd;
+        --white: #fff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.6;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .wrap {
+        width: min(1120px, calc(100% - 48px));
+        margin-inline: auto;
+      }
+
+      .topbar {
+        display: flex;
+        min-height: 82px;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        color: var(--ink);
+        font-size: 1.15rem;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 36px;
+        height: 36px;
+        place-items: center;
+        border-radius: 12px;
+        background: var(--green);
+        color: var(--white);
+        font-size: 0.85rem;
+        letter-spacing: -0.06em;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        font-size: 0.92rem;
+      }
+
+      .nav a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+
+      .nav a:hover,
+      .nav a:focus-visible {
+        color: var(--green);
+      }
+
+      .hero {
+        display: grid;
+        min-height: 570px;
+        grid-template-columns: 1.1fr 0.9fr;
+        align-items: center;
+        gap: 64px;
+        padding-block: 72px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0 0 20px;
+        color: var(--green);
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #77bd62;
+        content: "";
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 680px;
+        margin-bottom: 22px;
+        font-size: clamp(2.8rem, 6vw, 5.2rem);
+        font-weight: 750;
+        letter-spacing: -0.075em;
+        line-height: 1.03;
+      }
+
+      h1 span {
+        color: var(--green);
+      }
+
+      .hero-copy {
+        max-width: 550px;
+        margin-bottom: 30px;
+        color: var(--muted);
+        font-size: 1.1rem;
+      }
+
+      .button {
+        display: inline-flex;
+        min-height: 50px;
+        align-items: center;
+        justify-content: center;
+        padding: 0 21px;
+        border-radius: 8px;
+        background: var(--green);
+        color: var(--white);
+        font-size: 0.94rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background 150ms ease, transform 150ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+        background: var(--green-dark);
+      }
+
+      .button:focus-visible,
+      a:focus-visible {
+        outline: 3px solid #83b95f;
+        outline-offset: 4px;
+      }
+
+      .visual {
+        position: relative;
+        display: grid;
+        min-height: 390px;
+        place-items: center;
+        overflow: hidden;
+        border: 1px solid #d9e7d8;
+        border-radius: 28px;
+        background:
+          radial-gradient(ellipse at 70% 28%, rgb(201 239 138 / 68%), transparent 38%),
+          linear-gradient(145deg, #e6f1e4, #d8eadb 55%, #cce4d0);
+      }
+
+      .visual::before,
+      .visual::after {
+        position: absolute;
+        width: 245px;
+        height: 245px;
+        border: 1px solid rgb(23 107 75 / 13%);
+        border-radius: 50%;
+        content: "";
+      }
+
+      .visual::after {
+        width: 330px;
+        height: 330px;
+      }
+
+      .chat-card {
+        position: relative;
+        z-index: 1;
+        width: min(290px, 78%);
+        padding: 20px;
+        border: 1px solid rgb(24 53 45 / 7%);
+        border-radius: 17px;
+        background: var(--white);
+        box-shadow: 0 24px 70px rgb(24 53 45 / 13%);
+        transform: rotate(-3deg);
+      }
+
+      .chat-head {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #edf1ed;
+        font-size: 0.84rem;
+        font-weight: 750;
+      }
+
+      .chat-avatar {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-radius: 50%;
+        background: #e2f3d8;
+        color: var(--green);
+        font-weight: 800;
+      }
+
+      .chat-head small {
+        display: block;
+        color: #74847b;
+        font-size: 0.72rem;
+        font-weight: 500;
+      }
+
+      .bubble {
+        width: fit-content;
+        max-width: 90%;
+        margin-top: 15px;
+        padding: 11px 13px;
+        border-radius: 12px 12px 12px 3px;
+        background: #f0f4ef;
+        color: #40564b;
+        font-size: 0.78rem;
+      }
+
+      .bubble.outgoing {
+        margin-left: auto;
+        border-radius: 12px 12px 3px 12px;
+        background: #e3f3d8;
+      }
+
+      .section {
+        padding-block: 96px;
+      }
+
+      .section-heading {
+        max-width: 650px;
+        margin-bottom: 44px;
+      }
+
+      .section-heading h2 {
+        margin-bottom: 14px;
+        font-size: clamp(2rem, 4vw, 3.15rem);
+        letter-spacing: -0.06em;
+        line-height: 1.1;
+      }
+
+      .section-heading > p:last-child {
+        color: var(--muted);
+      }
+
+      .services {
+        border-top: 1px solid var(--line);
+      }
+
+      .service-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .service {
+        min-height: 220px;
+        padding: 27px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgb(255 255 255 / 65%);
+      }
+
+      .service-number {
+        display: inline-grid;
+        width: 36px;
+        height: 36px;
+        margin-bottom: 22px;
+        place-items: center;
+        border-radius: 10px;
+        background: #e4f0df;
+        color: var(--green);
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+
+      .service h3 {
+        margin-bottom: 9px;
+        font-size: 1.13rem;
+        letter-spacing: -0.025em;
+      }
+
+      .service p {
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 0.93rem;
+      }
+
+      .about {
+        padding-block: 78px;
+        background: var(--green-dark);
+        color: var(--white);
+      }
+
+      .about-inner {
+        display: grid;
+        grid-template-columns: 0.8fr 1.2fr;
+        align-items: start;
+        gap: 90px;
+      }
+
+      .about .eyebrow {
+        color: var(--lime);
+      }
+
+      .about h2 {
+        margin-bottom: 0;
+        font-size: clamp(2rem, 4vw, 3rem);
+        letter-spacing: -0.06em;
+        line-height: 1.1;
+      }
+
+      .about-copy {
+        max-width: 570px;
+        margin: 0;
+        color: #d2e2d9;
+        font-size: 1.05rem;
+      }
+
+      .footer {
+        display: flex;
+        min-height: 90px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .footer p {
+        margin: 0;
+      }
+
+      @media (max-width: 760px) {
+        .wrap {
+          width: min(100% - 36px, 560px);
+        }
+
+        .topbar {
+          min-height: 70px;
+        }
+
+        .nav {
+          gap: 17px;
+          font-size: 0.83rem;
+        }
+
+        .hero {
+          min-height: 0;
+          grid-template-columns: 1fr;
+          gap: 40px;
+          padding-block: 60px;
+        }
+
+        .visual {
+          min-height: 320px;
+        }
+
+        .section {
+          padding-block: 70px;
+        }
+
+        .service-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .service {
+          min-height: 0;
+        }
+
+        .about-inner {
+          grid-template-columns: 1fr;
+          gap: 25px;
+        }
+      }
+
+      @media (max-width: 420px) {
+        .nav {
+          gap: 12px;
+          font-size: 0.76rem;
+        }
+
+        .brand {
+          gap: 7px;
+          font-size: 1rem;
+        }
+
+        .brand-mark {
+          width: 32px;
+          height: 32px;
+        }
+
+        .footer {
+          align-items: flex-start;
+          flex-direction: column;
+          justify-content: center;
+          padding-block: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="wrap topbar">
+      <a class="brand" href="#inicio" aria-label="Bot5Whats, início">
+        <span class="brand-mark" aria-hidden="true">B5</span>
+        <span>Bot5Whats</span>
+      </a>
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="#solucoes">Soluções</a>
+        <a href="#sobre">Sobre</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="wrap hero" id="inicio">
+        <div>
+          <p class="eyebrow">Conversas que aproximam</p>
+          <h1>Atendimento mais simples, <span>conversa por conversa.</span></h1>
+          <p class="hero-copy">
+            A Bot5Whats cria soluções de automação para ajudar empresas a organizar
+            conversas e atender clientes pelo WhatsApp.
+          </p>
+          <a class="button" href="#solucoes">Conheça as soluções</a>
+        </div>
+
+        <div class="visual" role="img" aria-label="Ilustração de uma conversa de atendimento automatizado">
+          <div class="chat-card" aria-hidden="true">
+            <div class="chat-head">
+              <span class="chat-avatar">B</span>
+              <span>Atendimento Bot5Whats<small>Assistente virtual</small></span>
+            </div>
+            <div class="bubble">Olá! Como podemos ajudar?</div>
+            <div class="bubble outgoing">Quero saber mais sobre os serviços.</div>
+            <div class="bubble">Claro. Vamos encontrar a melhor opção para você.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section services" id="solucoes">
+        <div class="wrap">
+          <div class="section-heading">
+            <p class="eyebrow">O que fazemos</p>
+            <h2>Automação pensada para conversas reais.</h2>
+            <p>
+              Ferramentas para estruturar o atendimento, responder com agilidade
+              e manter cada conversa no caminho certo.
+            </p>
+          </div>
+          <div class="service-grid">
+            <article class="service">
+              <span class="service-number" aria-hidden="true">01</span>
+              <h3>Atendimento automatizado</h3>
+              <p>Fluxos de conversa que ajudam a responder perguntas frequentes e orientar clientes.</p>
+            </article>
+            <article class="service">
+              <span class="service-number" aria-hidden="true">02</span>
+              <h3>Organização de mensagens</h3>
+              <p>Estrutura para receber eventos e encaminhar cada conversa para a próxima etapa.</p>
+            </article>
+            <article class="service">
+              <span class="service-number" aria-hidden="true">03</span>
+              <h3>Integração com WhatsApp</h3>
+              <p>Implementação de recursos de comunicação usando a plataforma WhatsApp Business.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="about" id="sobre">
+        <div class="wrap about-inner">
+          <div>
+            <p class="eyebrow">Sobre a Bot5Whats</p>
+            <h2>Tecnologia a serviço de um bom atendimento.</h2>
+          </div>
+          <p class="about-copy">
+            A Bot5Whats é um projeto focado em soluções de chatbot e automação
+            para atendimento pelo WhatsApp. Nosso objetivo é tornar as interações
+            entre empresas e clientes mais claras, organizadas e eficientes,
+            com tecnologia adequada às necessidades de cada operação.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="wrap footer">
+      <a class="brand" href="#inicio">
+        <span class="brand-mark" aria-hidden="true">B5</span>
+        <span>Bot5Whats</span>
+      </a>
+      <p>&copy; <span id="year">2026</span> Bot5Whats. Todos os direitos reservados.</p>
+    </footer>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>
